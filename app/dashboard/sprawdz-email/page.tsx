@@ -22,6 +22,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "react-hot-toast";
+import supabase from "@/lib/supabase/client";
 
 type ResultStatus = "phishing" | "safe" | "suspicious" | null;
 
@@ -60,18 +61,17 @@ const EmailChecker = () => {
     setResult(null);
 
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/check-email`,
+      const { data, error } = await supabase.functions.invoke(
+        "check-phishing",
         {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ senderEmail, emailContent }),
+          body: { senderEmail, emailContent },
         }
       );
 
-      const data = await res.json();
+      if (error) {
+        throw error;
+      }
+
       setResult(data);
     } catch (e) {
       toast.error("Błąd podczas analizy wiadomości.");

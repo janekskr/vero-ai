@@ -33,7 +33,7 @@ Treść do analizy:
 
   try {
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-pro-preview",
+      model: "gemini-2.5-flash",
       contents: prompt,
       config: {
         responseMimeType: "application/json",

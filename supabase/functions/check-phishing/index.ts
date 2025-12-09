@@ -1,6 +1,6 @@
-// /supabase/functions/check-email/index.ts
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { GoogleGenAI } from "npm:@google/genai";
+
 import { corsHeaders } from "../_shared/cors.ts";
 
 async function callGeminiEmailCheck(
@@ -10,7 +10,6 @@ async function callGeminiEmailCheck(
 ) {
   const ai = new GoogleGenAI({ apiKey });
 
-  // Wydobywanie URL-i z treści maila
   const urlRegex = /(https?:\/\/[^\s]+)/g;
   const foundUrls = emailContent.match(urlRegex) || [];
 
@@ -55,7 +54,7 @@ ${foundUrls.map((u) => "- " + u).join("\n")}
 
   try {
     const response = await ai.models.generateContent({
-      model: "gemini-3-pro-preview",
+      model: "gemini-2.5-flash",
       contents: prompt,
       config: {
         responseMimeType: "application/json",
@@ -78,13 +77,10 @@ serve(async (req) => {
     const { senderEmail, emailContent } = await req.json();
 
     if (!senderEmail || !emailContent) {
-      return new Response(
-        JSON.stringify({ error: "Brak danych do analizy" }),
-        {
-          status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
-      );
+      return new Response(JSON.stringify({ error: "Brak danych do analizy" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     const apiKey = Deno.env.get("GOOGLE_API_KEY");
@@ -120,7 +116,6 @@ serve(async (req) => {
       }
 
       data.confidence = Math.max(0, Math.min(100, data.confidence));
-
     } catch (parseError) {
       console.error("JSON parse error:", parseError);
       console.error("Raw response:", result);
