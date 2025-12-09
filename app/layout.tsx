@@ -10,9 +10,8 @@ import { AccessibilityButton } from "@/components/AccessabilityWidget";
 const _Inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Supabase Authentication",
-  description: "Supabase authentication with React Query and Zod",
-  generator: "v0.app",
+  title: "VeroAI",
+  description: `VeroAI wykorzystuje sztuczną inteligencję, aby pomóc seniorom i dzieciom wykrywać fałszywe zdjęcia, nieprawdziwe wiadomości i podejrzane e-maile. Prosty i bezpieczny.`,
   icons: {
     icon: [
       {

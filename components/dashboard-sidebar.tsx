@@ -12,6 +12,7 @@ import {
   Settings,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Logo from "./Logo";
 
 const DashboardSidebar = () => {
   const pathname = usePathname();
@@ -41,30 +42,30 @@ const DashboardSidebar = () => {
   };
 
   return (
-    <aside className="w-64 bg-card border-r border-border min-h-screen flex flex-col">
+    <aside className="w-72 bg-card border-r border-border min-h-screen flex flex-col">
       <div className="p-6">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-            <Shield className="w-6 h-6 text-primary-foreground" />
-          </div>
-          <span className="text-xl font-bold text-foreground">VeroAI</span>
+        <Link href="/">
+          <Logo className="text-foreground" />
         </Link>
       </div>
 
-      <nav className="flex-1 px-4">
+      <nav className="flex-1 px-4 gap-8">
         <div className="space-y-1">
           {mainLinks.map((link) => (
             <Link
               key={link.to}
               href={link.to}
               className={cn(
-                "flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors",
+                "flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition-all",
                 isActive(link.to, link.exact)
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  ? "pl-4 border-l-4 border-primary rounded-none text-foreground font-medium  "
+                  : "hover:ml-1.5 hover:font-medium text-muted-foreground hover:text-foreground"
               )}
             >
-              <link.icon className="w-5 h-5" />
+              <link.icon
+                className={cn("w-5 h-5 scale-125")}
+                strokeWidth={isActive(link.to, link.exact) ? 1.7 : 1.5}
+              />
               {link.label}
             </Link>
           ))}
