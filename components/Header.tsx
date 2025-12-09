@@ -36,7 +36,7 @@ const Header = () => {
           </div>
 
           <Link href="/dashboard">
-            <Button>Wypróbuj za darmo</Button>
+            <Button>Przejdź dalej</Button>
           </Link>
         </div>
       </nav>
