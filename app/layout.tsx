@@ -1,12 +1,14 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { Inter } from "next/font/google"
-import { Analytics } from "@vercel/analytics/next"
-import "./globals.css"
-import { QueryProvider } from "@/lib/providers/query-provider"
-import { Toaster } from "react-hot-toast"
+import type React from "react";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import "./globals.css";
+import { QueryProvider } from "@/lib/providers/query-provider";
+import { Toaster } from "react-hot-toast";
+import AccessibilityClient from "@/components/AccesabilityClient";
+import Sigma from "@/components/sigma";
 
-const _Inter = Inter({ subsets: ["latin"] })
+const _Inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Supabase Authentication",
@@ -29,25 +31,24 @@ export const metadata: Metadata = {
     ],
     apple: "/apple-icon.png",
   },
-}
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
       <body className={`font-sans antialiased`}>
-        <Toaster
-          position="top-center"
-          reverseOrder={false}
-        />
+        <AccessibilityClient />
+        <Toaster position="top-center" reverseOrder={false} />
         <QueryProvider>
           {children}
           <Analytics />
         </QueryProvider>
+        <Sigma />
       </body>
     </html>
-  )
+  );
 }
