@@ -22,13 +22,14 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import supabase from "@/lib/supabase/client";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export default function ArticleChecker() {
   const [articleUrl, setArticleUrl] = useState("");
   const [articleContent, setArticleContent] = useState("");
   const [activeTab, setActiveTab] = useState("url");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [isFetching, setIsFetching] = useState(false);
   const [result, setResult] = useState<{
     isAI: boolean;
     confidence: number;
@@ -45,45 +46,6 @@ export default function ArticleChecker() {
     }
   };
 
-  const fetchArticleContent = async (url: string) => {
-    setIsFetching(true);
-    try {
-      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(
-        url
-      )}`;
-      const response = await fetch(proxyUrl);
-      const data = await response.json();
-
-      if (data.contents) {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(data.contents, "text/html");
-
-        doc
-          .querySelectorAll("script, style, nav, header, footer")
-          .forEach((el) => el.remove());
-
-        const article =
-          doc.querySelector("article") || doc.querySelector("main") || doc.body;
-        const text = article?.innerText || "";
-
-        const cleanedText = text.replace(/\s+/g, " ").trim().substring(0, 5000);
-
-        if (cleanedText.length > 100) {
-          setArticleContent(cleanedText);
-          return cleanedText;
-        } else {
-          throw new Error("Nie udało się wyodrębnić treści artykułu");
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching article:", error);
-      alert("Nie udało się pobrać artykułu. Spróbuj wkleić treść ręcznie.");
-      return null;
-    } finally {
-      setIsFetching(false);
-    }
-  };
-
   const analyzeArticle = async () => {
     let contentToAnalyze = "";
 
@@ -97,14 +59,7 @@ export default function ArticleChecker() {
         alert("Upewnij się, że wklejony link jest poprawny.");
         return;
       }
-
-      if (!articleContent) {
-        const fetchedContent = await fetchArticleContent(articleUrl);
-        if (!fetchedContent) return;
-        contentToAnalyze = fetchedContent;
-      } else {
-        contentToAnalyze = articleContent;
-      }
+      contentToAnalyze = articleUrl; // Send URL directly
     } else {
       if (!articleContent || articleContent.trim().length < 50) {
         alert("Wklej treść artykułu (minimum 50 znaków).");
@@ -121,7 +76,8 @@ export default function ArticleChecker() {
         "check-fake-news",
         {
           body: {
-            newsContent: contentToAnalyze,
+            content: contentToAnalyze,
+            isUrl: activeTab === "url",
           },
         }
       );
@@ -217,51 +173,28 @@ export default function ArticleChecker() {
                     value={articleUrl}
                     onChange={(e) => {
                       setArticleUrl(e.target.value);
-                      setArticleContent("");
                       setResult(null);
+                    }}
+                    onBlur={() => {
+                      if (articleUrl && isValidUrl(articleUrl)) {
+                        setResult(null);
+                      }
                     }}
                   />
                 </div>
 
                 {articleUrl && isValidUrl(articleUrl) && (
-                  <div className="flex items-center gap-2 p-3 bg-slate-100 dark:bg-slate-800 rounded-lg">
+                  <a
+                    href={articleUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 p-3 bg-slate-100 dark:bg-slate-800 rounded-lg"
+                  >
                     <ExternalLink className="w-4 h-4 text-slate-600 dark:text-slate-400" />
-                    <span className="text-sm text-slate-600 dark:text-slate-400 truncate">
+                    <span className="text-sm text-slate-600 underline decoration-primary dark:text-slate-400 truncate">
                       {new URL(articleUrl).hostname}
                     </span>
-                  </div>
-                )}
-
-                {!articleContent && articleUrl && isValidUrl(articleUrl) && (
-                  <Button
-                    onClick={() => fetchArticleContent(articleUrl)}
-                    disabled={isFetching}
-                    variant="outline"
-                    className="w-full"
-                  >
-                    {isFetching ? (
-                      <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Pobieram artykuł...
-                      </>
-                    ) : (
-                      <>
-                        <ExternalLink className="w-4 h-4 mr-2" />
-                        Pobierz treść artykułu
-                      </>
-                    )}
-                  </Button>
-                )}
-
-                {articleContent && (
-                  <div className="p-3 bg-slate-100 dark:bg-slate-800 rounded-lg">
-                    <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">
-                      Pobrano treść artykułu ({articleContent.length} znaków)
-                    </p>
-                    <p className="text-xs text-slate-500 line-clamp-3">
-                      {articleContent}
-                    </p>
-                  </div>
+                  </a>
                 )}
               </TabsContent>
 
@@ -274,7 +207,6 @@ export default function ArticleChecker() {
                     value={articleContent}
                     onChange={(e) => {
                       setArticleContent(e.target.value);
-                      setArticleUrl("");
                       setResult(null);
                     }}
                     rows={10}
@@ -294,7 +226,6 @@ export default function ArticleChecker() {
               onClick={analyzeArticle}
               disabled={
                 isAnalyzing ||
-                isFetching ||
                 (activeTab === "url" && !articleUrl) ||
                 (activeTab === "content" && !articleContent)
               }
@@ -336,9 +267,11 @@ export default function ArticleChecker() {
                   <h4 className="font-medium text-slate-900 dark:text-slate-100 mb-2">
                     Wyjaśnienie:
                   </h4>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
-                    {result.reasoning}
-                  </p>
+                  <div className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+                    <Markdown remarkPlugins={[remarkGfm]}>
+                      {result.reasoning}
+                    </Markdown>
+                  </div>
 
                   <h4 className="font-medium text-slate-900 dark:text-slate-100 mb-2">
                     Kluczowe wskaźniki:
@@ -356,7 +289,7 @@ export default function ArticleChecker() {
                   </ul>
                 </div>
 
-                <div className="p-4 bg-white dark:bg-slate-800 rounded-lg">
+                <div className="p-4 bg-white dark:bg-slate-800 rounded-lg border-border">
                   <h4 className="font-medium text-slate-900 dark:text-slate-100 mb-1">
                     Zalecenie:
                   </h4>

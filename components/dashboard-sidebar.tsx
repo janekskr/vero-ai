@@ -28,7 +28,7 @@ const DashboardSidebar = () => {
     {
       to: "/dashboard/sprawdz-artykul",
       icon: Newspaper,
-      label: "Weryfikator Wiadomości",
+      label: "Weryfikator Newsów",
     },
     { to: "/dashboard/sprawdz-email", icon: Mail, label: "Detektor Phishingu" },
     {

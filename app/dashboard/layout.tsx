@@ -1,15 +1,15 @@
-import type React from "react"
-import DashboardSidebar from "@/components/dashboard-sidebar"
+import type React from "react";
+import DashboardSidebar from "@/components/dashboard-sidebar";
 
 export default function DashboardLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex h-screen overflow-hidden bg-background">
       <DashboardSidebar />
-      <main className="flex-1 p-8">{children}</main>
+      <main className="flex-1 p-8 overflow-auto">{children}</main>
     </div>
-  )
+  );
 }

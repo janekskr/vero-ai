@@ -7,7 +7,6 @@ const Hero = () => {
     <section className="relative overflow-hidden bg-linear-to-b from-hero-from to-hero-to py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16 animate-fade-in">
-          
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
             Chroń siebie i bliskich
             <br />
@@ -20,7 +19,7 @@ const Hero = () => {
           </p>
           <Link href="/dashboard">
             <Button size="lg" className="gap-2 text-base px-8 py-6">
-              Rozpocznij sprawdzanie
+              Sprawdź teraz
               <ArrowRight className="w-5 h-5" />
             </Button>
           </Link>
@@ -50,7 +49,7 @@ const Hero = () => {
                 <div className="h-14 flex items-center justify-center">
                   <Newspaper className="w-7 h-7 text-primary" />
                 </div>
-              
+
                 <h3 className="text-xl font-semibold text-foreground">
                   Weryfikator Wiadomości
                 </h3>
