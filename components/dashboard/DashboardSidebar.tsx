@@ -1,9 +1,9 @@
-import { Link, useLocation } from "react-router-dom";
+import Link from "next/link";
 import { Shield, Image, Newspaper, Mail, Home, HelpCircle, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const DashboardSidebar = () => {
-  const location = useLocation();
+
 
   const mainLinks = [
     { to: "/dashboard", icon: Home, label: "Strona główna", exact: true },
@@ -27,7 +27,7 @@ const DashboardSidebar = () => {
   return (
     <aside className="w-64 bg-card border-r border-border min-h-screen flex flex-col">
       <div className="p-6">
-        <Link to="/" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
           <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
             <Shield className="w-6 h-6 text-primary-foreground" />
           </div>
@@ -40,7 +40,7 @@ const DashboardSidebar = () => {
           {mainLinks.map((link) => (
             <Link
               key={link.to}
-              to={link.to}
+              href={link.to}
               className={cn(
                 "flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors",
                 isActive(link.to, link.exact)
