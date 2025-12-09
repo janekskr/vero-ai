@@ -112,3 +112,7 @@
     @apply font-bold;
   }
 }
+
+._access-icon {
+  display: none !important;
+}
