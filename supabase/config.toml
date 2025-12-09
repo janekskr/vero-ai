@@ -6,3 +6,6 @@ verify_jwt = false
 [functions.check-fake-news]
 verify_jwt = false
 
+[functions.check-phishing]
+verify_jwt = false
+

@@ -7,7 +7,7 @@ import {
   CheckCircle,
   AlertTriangle,
   XCircle,
-  Link2,
+  Link as LinkIcon,
   Shield,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -21,7 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 type ResultStatus = "phishing" | "safe" | "suspicious" | null;
 
@@ -60,48 +60,24 @@ const EmailChecker = () => {
     setResult(null);
 
     try {
-      const SUPABASE_URL =
-        process.env.NEXT_PUBLIC_SUPABASE_URL || "YOUR_SUPABASE_URL";
-      const SUPABASE_ANON_KEY =
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "YOUR_SUPABASE_ANON_KEY";
-
-      const response = await fetch(
-        `${SUPABASE_URL}/functions/v1/analyze-email`,
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/check-email`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
           },
-          body: JSON.stringify({
-            senderEmail,
-            emailContent,
-          }),
+          body: JSON.stringify({ senderEmail, emailContent }),
         }
       );
 
-      if (!response.ok) {
-        throw new Error(`API error: ${response.status}`);
-      }
-
-      const data = await response.json();
+      const data = await res.json();
       setResult(data);
-
-      if (data.status === "phishing") {
-        toast.error("Uwaga! Wykryto potencjalny phishing!");
-      } else if (data.status === "safe") {
-        toast.success("E-mail wydaje się bezpieczny");
-      } else {
-        toast("Wykryto podejrzane elementy", { icon: "⚠️" });
-      }
-    } catch (error: any) {
-      console.error("Analysis error:", error);
-      toast.error(
-        error.message || "Błąd podczas analizy. Sprawdź konfigurację API."
-      );
-    } finally {
-      setIsAnalyzing(false);
+    } catch (e) {
+      toast.error("Błąd podczas analizy wiadomości.");
     }
+
+    setIsAnalyzing(false);
   };
 
   const getResultIcon = (status: ResultStatus) => {
@@ -166,13 +142,13 @@ const EmailChecker = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-4">
+    <div className="max-w-3xl mx-auto">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-foreground mb-2">
-          Detektor Phishingu AI
+          Detektor Phishingu
         </h1>
         <p className="text-muted-foreground">
-          Wykorzystuje Gemini AI do analizy e-maili pod kątem zagrożeń
+          Sprawdź czy e-mail nie jest próbą wyłudzenia Twoich danych
         </p>
       </div>
 
@@ -211,7 +187,8 @@ const EmailChecker = () => {
               rows={8}
             />
             <p className="text-xs text-muted-foreground">
-              Gemini AI przeanalizuje treść, nadawcę i wszystkie linki
+              Wskazówka: Wklej całą treść e-maila - nasza AI przeanalizuje
+              również wszystkie linki
             </p>
           </div>
 
@@ -224,7 +201,7 @@ const EmailChecker = () => {
             {isAnalyzing ? (
               <>
                 <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                Analizuję z Gemini AI...
+                Analizuję e-mail...
               </>
             ) : (
               <>
@@ -298,7 +275,7 @@ const EmailChecker = () => {
                     {result.linkAnalysis.map((link, index) => (
                       <div key={index} className="p-3 bg-background rounded-lg">
                         <div className="flex items-center gap-2 mb-1">
-                          <Link2 className="w-4 h-4 text-muted-foreground" />
+                          <LinkIcon className="w-4 h-4 text-muted-foreground" />
                           <span className="text-sm text-foreground truncate flex-1">
                             {link.url}
                           </span>
