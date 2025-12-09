@@ -5,7 +5,6 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { QueryProvider } from "@/lib/providers/query-provider";
 import { Toaster } from "react-hot-toast";
-import AccessibilityClient from "@/components/AccesabilityClient";
 import { AccessibilityButton } from "@/components/AccessabilityWidget";
 
 const _Inter = Inter({ subsets: ["latin"] });
