@@ -239,7 +239,7 @@ const ArticleChecker = () => {
                       key={index}
                       className="flex items-start gap-2 text-sm text-muted-foreground"
                     >
-                      <span className="w-1.5 h-1.5 bg-current rounded-full mt-2 flex-shrink-0" />
+                      <span className="w-1.5 h-1.5 bg-current rounded-full mt-2 shrink-0" />
                       {reason}
                     </li>
                   ))}
