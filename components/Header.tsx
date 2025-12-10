@@ -12,24 +12,24 @@ const Header = () => {
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
-            <a
-              href="#funkcje"
+            <Link
+              href="/#funkcje"
               className="text-foreground hover:text-primary transition-colors"
             >
               Funkcje
-            </a>
-            <a
-              href="#jak-dziala"
+            </Link>
+            <Link
+              href="/#jak-dziala"
               className="text-foreground hover:text-primary transition-colors"
             >
               Jak działa
-            </a>
-            <a
-              href="#bezpieczenstwo"
+            </Link>
+            <Link
+              href="/bezpieczenstwo"
               className="text-foreground hover:text-primary transition-colors"
             >
               Bezpieczeństwo
-            </a>
+            </Link>
           </div>
 
           <Link href="/dashboard">
