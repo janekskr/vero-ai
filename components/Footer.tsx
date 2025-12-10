@@ -45,6 +45,14 @@ const Footer = () => {
                   Detektor Phishingu
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/dashboard/generuj-haslo"
+                  className="hover:text-background transition-colors"
+                >
+                  Generator haseł
+                </Link>
+              </li>
             </ul>
           </div>
 
