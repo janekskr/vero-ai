@@ -28,17 +28,16 @@ const Hero = () => {
 
         <div className="w-full flex flex-col gap-12">
           <section className="bg-white w-full rounded-2xl">
-            <div className="mx-auto max-w-6xl px-6 py-20 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div className="mx-auto max-w-6xl px-4 md:px-6 py-12 md:py-20 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 items-center">
               <div>
-                <h1 className="text-4xl font-bold text-black mb-4">
+                <h1 className="text-3xl md:text-4xl font-bold text-black mb-4">
                   🖼️ Weryfikator zdjęć AI
                 </h1>
-                <p className="text-lg text-black/70 mb-6">
+                <p className="text-base md:text-lg text-black/70 mb-6">
                   Dowiedz się, czy zdjęcie zostało stworzone przez sztuczną
                   inteligencję. Nasz system identyfikuje artefakty typowe dla
                   generatywnych modeli, analizuje szczegóły obrazu i wykrywa
-                  nienaturalne wzorce. Idealne narzędzie do weryfikacji
-                  autentyczności treści wizualnych.
+                  nienaturalne wzorce.
                 </p>
 
                 <Link
@@ -55,31 +54,32 @@ const Hero = () => {
                   alt="Hero Image"
                   width={500}
                   height={350}
-                  className="rounded-xl shadow-md"
+                  className="rounded-xl shadow-md w-full h-auto"
                 />
               </div>
             </div>
           </section>
+
           <section className="bg-white w-full rounded-2xl">
-            <div className="mx-auto max-w-6xl px-6 py-20 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div className="mx-auto max-w-6xl px-4 md:px-6 py-12 md:py-20 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 items-center">
               <div className="w-full flex justify-center">
                 <Image
                   src="/Screen2.png"
                   alt="Hero Image"
                   width={500}
                   height={350}
-                  className="rounded-xl shadow-md"
+                  className="rounded-xl shadow-md w-full h-auto"
                 />
               </div>
+
               <div>
-                <h1 className="text-4xl font-bold text-black mb-4">
+                <h1 className="text-3xl md:text-4xl font-bold text-black mb-4">
                   📰 Weryfikator newsów
                 </h1>
-                <p className="text-lg text-black/70 mb-6">
+                <p className="text-base md:text-lg text-black/70 mb-6">
                   Sprawdzaj szybko, czy wiadomość pochodzi z wiarygodnego
-                  źródła. Analizujemy treść, porównujemy ją z renomowanymi
-                  portalami oraz wykrywamy typowe sygnały dezinformacji. To
-                  sposób na łatwiejsze odróżnianie faktów od fake newsów.
+                  źródła. Analizujemy treść i wykrywamy typowe sygnały
+                  dezinformacji.
                 </p>
 
                 <Link
@@ -91,13 +91,14 @@ const Hero = () => {
               </div>
             </div>
           </section>
+
           <section className="bg-white w-full rounded-2xl">
-            <div className="mx-auto max-w-6xl px-6 py-20 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div className="mx-auto max-w-6xl px-4 md:px-6 py-12 md:py-20 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 items-center">
               <div>
-                <h1 className="text-4xl font-bold text-black mb-4">
-                  📧 Weryfikator adresów e-mail
+                <h1 className="text-3xl md:text-4xl font-bold text-black mb-4">
+                  📧 Weryfikator e-mail
                 </h1>
-                <p className="text-lg text-black/70 mb-6">
+                <p className="text-base md:text-lg text-black/70 mb-6">
                   Sprawdź, czy adres e-mail jest prawidłowy, aktywny i gotowy do
                   użycia. Weryfikator analizuje strukturę adresu, dostępność
                   domeny oraz potencjalne błędy, dzięki czemu unikniesz
@@ -118,27 +119,29 @@ const Hero = () => {
                   alt="Hero Image"
                   width={500}
                   height={350}
-                  className="rounded-xl shadow-md"
+                  className="rounded-xl shadow-md w-full h-auto"
                 />
               </div>
             </div>
           </section>
+
           <section className="bg-white w-full rounded-2xl">
-            <div className="mx-auto max-w-6xl px-6 py-20 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div className="mx-auto max-w-6xl px-4 md:px-6 py-12 md:py-20 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 items-center">
               <div className="w-full flex justify-center">
                 <Image
                   src="/Screen4.png"
                   alt="Hero Image"
                   width={500}
                   height={350}
-                  className="rounded-xl shadow-md"
+                  className="rounded-xl shadow-md w-full h-auto"
                 />
               </div>
+
               <div>
-                <h1 className="text-4xl font-bold text-black mb-4">
+                <h1 className="text-3xl md:text-4xl font-bold text-black mb-4">
                   🔐 Generator haseł
                 </h1>
-                <p className="text-lg text-black/70 mb-6">
+                <p className="text-base md:text-lg text-black/70 mb-6">
                   Twórz w kilka sekund bezpieczne, unikalne hasła dopasowane do
                   Twoich potrzeb. Nasz generator pozwala określić długość hasła,
                   używane znaki oraz poziom skomplikowania. Dzięki temu
