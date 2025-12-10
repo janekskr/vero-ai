@@ -54,7 +54,7 @@ const DashboardSidebar = () => {
   return (
     <>
       <button
-        className="md:hidden fixed top-4 left-4 z-60 bg-card border border-border p-2 rounded-lg shadow-sm"
+        className="md:hidden cursor-pointer fixed top-4 left-4 z-60 bg-card border border-border p-2 rounded-lg shadow-sm"
         onClick={() => setOpen(!open)}
       >
         {open ? <X size={24} /> : <Menu size={24} />}
@@ -73,7 +73,7 @@ const DashboardSidebar = () => {
           open ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         )}
       >
-        <div className="p-6">
+        <div className={cn("p-6", open && "ml-10")}>
           <Link href="/" onClick={() => setOpen(false)}>
             <Logo className="text-foreground" />
           </Link>
