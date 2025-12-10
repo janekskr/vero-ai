@@ -1,102 +1,110 @@
-"use client"
-import { cn } from "@/lib/utils"
-import Footer from '@/components/Footer'
-import Header from '@/components/Header'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import Link from 'next/link'
-import Image from 'next/image'
-import { useEffect, useState, useRef } from 'react'
-
+"use client";
+import { cn } from "@/lib/utils";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import Image from "next/image";
+import { useEffect, useState, useRef } from "react";
 
 interface TutorialStep {
-  title: string
-  description: string
-  content: React.ReactNode
+  title: string;
+  description: string;
+  content: React.ReactNode;
 }
 
 interface TutorialSection {
-  id: string
-  title: string
-  description: string
-  icon: string
-  color: string
-  steps: TutorialStep[]
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  color: string;
+  steps: TutorialStep[];
 }
 //funkcja do konsturowania ścieżki obrazka
 const imgUrlHelp = (name: string) => `/tutorial/${name}.png`;
 
 const Tutorial = () => {
-  const [activeSectionSteps, setActiveSectionSteps] = useState<Record<string, number>>({})
-  const [stepHeights, setStepHeights] = useState<Record<string, number[]>>({})
-  const stepRefs = useRef<Record<string, HTMLDivElement[]>>({})
+  const [activeSectionSteps, setActiveSectionSteps] = useState<
+    Record<string, number>
+  >({});
+  const [stepHeights, setStepHeights] = useState<Record<string, number[]>>({});
+  const stepRefs = useRef<Record<string, HTMLDivElement[]>>({});
 
   useEffect(() => {
     // Zbierz wysokości kroków dla każdej sekcji
-    const newStepHeights: Record<string, number[]> = {}
-    
-    document.querySelectorAll('[data-section]').forEach((section) => {
-      const sectionId = section.getAttribute('data-section')
-      if (!sectionId) return
-      
-      const stepElements = section.querySelectorAll('[data-step]')
-      const heights: number[] = []
-      
+    const newStepHeights: Record<string, number[]> = {};
+
+    document.querySelectorAll("[data-section]").forEach((section) => {
+      const sectionId = section.getAttribute("data-section");
+      if (!sectionId) return;
+
+      const stepElements = section.querySelectorAll("[data-step]");
+      const heights: number[] = [];
+
       stepElements.forEach((element) => {
-        const rect = element.getBoundingClientRect()
-        heights.push(rect.height + 32) // dodaj space-y-8 (32px)
-      })
-      
-      newStepHeights[sectionId] = heights
-    })
-    
-    setStepHeights(newStepHeights)
-  }, [])
+        const rect = element.getBoundingClientRect();
+        heights.push(rect.height + 32); // dodaj space-y-8 (32px)
+      });
+
+      newStepHeights[sectionId] = heights;
+    });
+
+    setStepHeights(newStepHeights);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
-      const newActiveSectionSteps: Record<string, number> = {}
+      const newActiveSectionSteps: Record<string, number> = {};
 
-      document.querySelectorAll('[data-section]').forEach((section) => {
-        const sectionId = section.getAttribute('data-section')
-        const stepElements = section.querySelectorAll('[data-step]')
-        let activeStep = 0
+      document.querySelectorAll("[data-section]").forEach((section) => {
+        const sectionId = section.getAttribute("data-section");
+        const stepElements = section.querySelectorAll("[data-step]");
+        let activeStep = 0;
 
         stepElements.forEach((element, index) => {
-          const rect = element.getBoundingClientRect()
+          const rect = element.getBoundingClientRect();
           if (rect.top < window.innerHeight / 2) {
-            activeStep = index
+            activeStep = index;
           }
-        })
+        });
 
         if (sectionId) {
-          newActiveSectionSteps[sectionId] = activeStep
+          newActiveSectionSteps[sectionId] = activeStep;
         }
-      })
+      });
 
-      setActiveSectionSteps(newActiveSectionSteps)
-    }
+      setActiveSectionSteps(newActiveSectionSteps);
+    };
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const sections: TutorialSection[] = [
     {
-      id: 'image-detector',
-      title: 'Wykrywacz AI Zdjęć',
-      description: 'Sprawdź czy zdjęcie zostało wygenerowane przez sztuczną inteligencję',
-      icon: '🖼️',
-      color: 'blue',
+      id: "image-detector",
+      title: "Wykrywacz AI Zdjęć",
+      description:
+        "Sprawdź czy zdjęcie zostało wygenerowane przez sztuczną inteligencję",
+      icon: "🖼️",
+      color: "blue",
       steps: [
         {
-          title: 'Krok 1: Wejdź do narzędzia',
-          description: 'Otwórz Wykrywacz AI Zdjęć z pulpitu nawigacyjnego.',
+          title: "Krok 1: Wejdź do narzędzia",
+          description: "Otwórz Wykrywacz AI Zdjęć z pulpitu nawigacyjnego.",
           content: (
             <div className="space-y-4">
-              <div className="relative w-full bg-muted rounded-lg overflow-hidden border border-border">
+              <div className="relative w-full bg-muted rounded-lg overflow-hidden border-2 border-border">
                 <Image
-                  src={imgUrlHelp('image-detector-step1')}
+                  src={imgUrlHelp("image-detector-step1")}
                   alt="Strona główna pulpitu nawigacyjnego z trzema narzędziami"
                   width={800}
                   height={450}
@@ -104,19 +112,22 @@ const Tutorial = () => {
                 />
               </div>
               <p className="text-foreground leading-relaxed">
-                Na pulpicie nawigacyjnym znajdziesz trzy główne narzędzia. Kliknij na kartę "Wykrywacz AI Zdjęć" aby otworzyć narzędzie do sprawdzania zdjęć.
+                Na pulpicie nawigacyjnym znajdziesz trzy główne narzędzia.
+                Kliknij na kartę "Wykrywacz AI Zdjęć" aby otworzyć narzędzie do
+                sprawdzania zdjęć.
               </p>
             </div>
-          )
+          ),
         },
         {
-          title: 'Krok 2: Dodaj zdjęcie',
-          description: 'Możesz przesłać plik, wkleić link lub przeciągnąć zdjęcie.',
+          title: "Krok 2: Dodaj zdjęcie",
+          description:
+            "Możesz przesłać plik, wkleić link lub przeciągnąć zdjęcie.",
           content: (
             <div className="space-y-4">
-              <div className="relative w-full bg-muted rounded-lg overflow-hidden border border-border">
+              <div className="relative w-full bg-muted rounded-lg overflow-hidden border-2 border-border">
                 <Image
-                  src={imgUrlHelp('image-detector-step2')}
+                  src={imgUrlHelp("image-detector-step2")}
                   alt="Interfejs przesyłania zdjęcia z opcjami przeciągnij i upuść"
                   width={800}
                   height={450}
@@ -130,11 +141,16 @@ const Tutorial = () => {
                 <ul className="space-y-2 text-muted-foreground">
                   <li className="flex gap-3">
                     <span className="text-primary font-semibold">1.</span>
-                    <span>Kliknij "Wybierz Zdjęcie" aby otworzyć folder na komputerze</span>
+                    <span>
+                      Kliknij "Wybierz Zdjęcie" aby otworzyć folder na
+                      komputerze
+                    </span>
                   </li>
                   <li className="flex gap-3">
                     <span className="text-primary font-semibold">2.</span>
-                    <span>Przeciągnij zdjęcie myszą i upuść je na szary obszar</span>
+                    <span>
+                      Przeciągnij zdjęcie myszą i upuść je na szary obszar
+                    </span>
                   </li>
                   <li className="flex gap-3">
                     <span className="text-primary font-semibold">3.</span>
@@ -143,16 +159,16 @@ const Tutorial = () => {
                 </ul>
               </div>
             </div>
-          )
+          ),
         },
         {
-          title: 'Krok 3: Czekaj na wynik analizy',
-          description: 'System automatycznie analizuje zdjęcie.',
+          title: "Krok 3: Czekaj na wynik analizy",
+          description: "System automatycznie analizuje zdjęcie.",
           content: (
             <div className="space-y-4">
-              <div className="relative w-full bg-muted rounded-lg overflow-hidden border border-border">
+              <div className="relative w-full bg-muted rounded-lg overflow-hidden border-2 border-border">
                 <Image
-                  src={imgUrlHelp('image-detector-step3')}
+                  src={imgUrlHelp("image-detector-step3")}
                   alt="Ekran ładowania z komunikatem Analizuję zdjęcie"
                   width={800}
                   height={450}
@@ -160,18 +176,21 @@ const Tutorial = () => {
                 />
               </div>
               <p className="text-foreground leading-relaxed">
-                Analiza zwykle zajmuje 5-30 sekund. Czekaj cierpliwie na wynik. Nie zamykaj strony podczas analizy.
+                Analiza zwykle zajmuje 5-30 sekund. Czekaj cierpliwie na wynik.
+                Nie zamykaj strony podczas analizy.
               </p>
             </div>
-          )
+          ),
         },
         {
-          title: 'Krok 4: Przeczytaj wynik',
-          description: 'Wynik pokazuje czy zdjęcie jest autentyczne czy wygenerowane przez AI.',
+          title: "Krok 4: Przeczytaj wynik",
+          description:
+            "Wynik pokazuje czy zdjęcie jest autentyczne czy wygenerowane przez AI.",
           content: (
             <div className="space-y-4">
-              <div className="relative w-full bg-muted rounded-lg overflow-hidden border border-border">
+              <div className="relative w-full bg-muted rounded-lg overflow-hidden border-2 border-border">
                 <Image
+                  src={imgUrlHelp("image-detector-step1")}
                   src={imgUrlHelp('image-detector-step4')}
                   alt="Wynik analizy pokazujący zdjęcie autentyczne ze wskaźnikiem pewności"
                   width={800}
@@ -185,39 +204,51 @@ const Tutorial = () => {
                 </p>
                 <div className="space-y-2">
                   <div className="flex gap-3 p-3 bg-green-50 border border-green-200 rounded-lg">
-                    <span className="text-green-700 font-semibold">Autentyczne</span>
-                    <span className="text-green-700">Zdjęcie wydaje się oryginalne</span>
+                    <span className="text-green-700 font-semibold">
+                      Autentyczne
+                    </span>
+                    <span className="text-green-700">
+                      Zdjęcie wydaje się oryginalne
+                    </span>
                   </div>
                   <div className="flex gap-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                    <span className="text-yellow-700 font-semibold">Niepewne</span>
-                    <span className="text-yellow-700">Wynik nie jest jednoznaczny</span>
+                    <span className="text-yellow-700 font-semibold">
+                      Niepewne
+                    </span>
+                    <span className="text-yellow-700">
+                      Wynik nie jest jednoznaczny
+                    </span>
                   </div>
                   <div className="flex gap-3 p-3 bg-red-50 border border-red-200 rounded-lg">
-                    <span className="text-red-700 font-semibold">Wygenerowane przez AI</span>
-                    <span className="text-red-700">Zdjęcie jest podejrzane</span>
+                    <span className="text-red-700 font-semibold">
+                      Wygenerowane przez AI
+                    </span>
+                    <span className="text-red-700">
+                      Zdjęcie jest podejrzane
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
-          )
-        }
-      ]
+          ),
+        },
+      ],
     },
     {
-      id: 'article-checker',
-      title: 'Weryfikator Wiadomości',
-      description: 'Sprawdź czy artykuł zawiera fałszywe informacje',
-      icon: '📰',
-      color: 'green',
+      id: "article-checker",
+      title: "Weryfikator Wiadomości",
+      description: "Sprawdź czy artykuł zawiera fałszywe informacje",
+      icon: "📰",
+      color: "green",
       steps: [
         {
-          title: 'Krok 1: Otwórz Weryfikator',
-          description: 'Przejdź do narzędzia weryfikacji artykułów.',
+          title: "Krok 1: Otwórz Weryfikator",
+          description: "Przejdź do narzędzia weryfikacji artykułów.",
           content: (
             <div className="space-y-4">
-              <div className="relative w-full bg-muted rounded-lg overflow-hidden border border-border">
+              <div className="relative w-full bg-muted rounded-lg overflow-hidden border-2 border-border">
                 <Image
-                  src={imgUrlHelp('fake-news-detector-step1')}
+                  src={imgUrlHelp("fake-news-detector-step1")}
                   alt="Wybór Weryfikatora Wiadomości na pulpicie nawigacyjnym"
                   width={800}
                   height={450}
@@ -225,19 +256,20 @@ const Tutorial = () => {
                 />
               </div>
               <p className="text-foreground leading-relaxed">
-                Kliknij kartę "Weryfikator Wiadomości" aby otworzyć narzędzie do sprawdzania artykułów.
+                Kliknij kartę "Weryfikator Wiadomości" aby otworzyć narzędzie do
+                sprawdzania artykułów.
               </p>
             </div>
-          )
+          ),
         },
         {
-          title: 'Krok 2: Dodaj artykuł',
-          description: 'Możesz wkleić link do artykułu lub jego treść.',
+          title: "Krok 2: Dodaj artykuł",
+          description: "Możesz wkleić link do artykułu lub jego treść.",
           content: (
             <div className="space-y-4">
-              <div className="relative w-full bg-muted rounded-lg overflow-hidden border border-border">
+              <div className="relative w-full bg-muted rounded-lg overflow-hidden border-2 border-border">
                 <Image
-                  src={imgUrlHelp('fake-news-detector-step2')}
+                  src={imgUrlHelp("fake-news-detector-step2")}
                   alt="Formularz z wyborem pomiędzy wklejeniem linku lub treści artykułu"
                   width={800}
                   height={450}
@@ -259,20 +291,21 @@ const Tutorial = () => {
                   </li>
                 </ul>
                 <p className="text-sm text-muted-foreground mt-4">
-                  Aby skopiować tekst: zaznacz go myszą, naciśnij Ctrl+C, a następnie wklej Ctrl+V w polu tekstowym.
+                  Aby skopiować tekst: zaznacz go myszą, naciśnij Ctrl+C, a
+                  następnie wklej Ctrl+V w polu tekstowym.
                 </p>
               </div>
             </div>
-          )
+          ),
         },
         {
-          title: 'Krok 3: Sprawdź wiarygodność',
-          description: 'Naciśnij przycisk aby system sprawdził artykuł.',
+          title: "Krok 3: Sprawdź wiarygodność",
+          description: "Naciśnij przycisk aby system sprawdził artykuł.",
           content: (
             <div className="space-y-4">
-              <div className="relative w-full bg-muted rounded-lg overflow-hidden border border-border">
+              <div className="relative w-full bg-muted rounded-lg overflow-hidden border-2 border-border">
                 <Image
-                  src={imgUrlHelp('fake-news-detector-step3')}
+                  src={imgUrlHelp("fake-news-detector-step3")}
                   alt="Ekran podczas analizy artykułu z paskiem postępu"
                   width={800}
                   height={450}
@@ -280,19 +313,20 @@ const Tutorial = () => {
                 />
               </div>
               <p className="text-foreground leading-relaxed">
-                System analizuje artykuł w poszukiwaniu sprzeczności i fałszywych informacji. Analiza zajmuje 10-20 sekund.
+                System analizuje artykuł w poszukiwaniu sprzeczności i
+                fałszywych informacji. Analiza zajmuje 10-20 sekund.
               </p>
             </div>
-          )
+          ),
         },
         {
-          title: 'Krok 4: Przeanalizuj wynik',
-          description: 'Wynik zawiera szczegółową analizę artykułu.',
+          title: "Krok 4: Przeanalizuj wynik",
+          description: "Wynik zawiera szczegółową analizę artykułu.",
           content: (
             <div className="space-y-4">
-              <div className="relative w-full bg-muted rounded-lg overflow-hidden border border-border">
+              <div className="relative w-full bg-muted rounded-lg overflow-hidden border-2 border-border">
                 <Image
-                  src={imgUrlHelp('fake-news-detector-step4')}
+                  src={imgUrlHelp("fake-news-detector-step4")}
                   alt="Wynik weryfikacji artykułu z oznaczeniem wiarygodności i wskaźnikami"
                   width={800}
                   height={450}
@@ -306,11 +340,15 @@ const Tutorial = () => {
                 <ul className="space-y-2 text-muted-foreground">
                   <li className="flex gap-3">
                     <span className="text-primary font-semibold">•</span>
-                    <span>Główne werdykty - czy artykuł jest prawdziwy czy fałszywy</span>
+                    <span>
+                      Główne werdykty - czy artykuł jest prawdziwy czy fałszywy
+                    </span>
                   </li>
                   <li className="flex gap-3">
                     <span className="text-primary font-semibold">•</span>
-                    <span>Wskaźniki zagrożenia - fragmenty które mogą być fałszywe</span>
+                    <span>
+                      Wskaźniki zagrożenia - fragmenty które mogą być fałszywe
+                    </span>
                   </li>
                   <li className="flex gap-3">
                     <span className="text-primary font-semibold">•</span>
@@ -323,25 +361,25 @@ const Tutorial = () => {
                 </ul>
               </div>
             </div>
-          )
-        }
-      ]
+          ),
+        },
+      ],
     },
     {
-      id: 'phishing-detector',
-      title: 'Detektor Phishingu',
-      description: 'Sprawdź czy e-mail nie jest próbą oszustwa',
-      icon: '📧',
-      color: 'orange',
+      id: "phishing-detector",
+      title: "Detektor Phishingu",
+      description: "Sprawdź czy e-mail nie jest próbą oszustwa",
+      icon: "📧",
+      color: "orange",
       steps: [
         {
-          title: 'Krok 1: Otwórz Detektor',
-          description: 'Przejdź do narzędzia do sprawdzania e-maili.',
+          title: "Krok 1: Otwórz Detektor",
+          description: "Przejdź do narzędzia do sprawdzania e-maili.",
           content: (
             <div className="space-y-4">
-              <div className="relative w-full bg-muted rounded-lg overflow-hidden border border-border">
+              <div className="relative w-full bg-muted rounded-lg overflow-hidden border-2 border-border">
                 <Image
-                  src={imgUrlHelp('phishing-detector-step1')}
+                  src={imgUrlHelp("phishing-detector-step1")}
                   alt="Wybór Detektora Phishingu na pulpicie nawigacyjnym"
                   width={800}
                   height={450}
@@ -349,19 +387,20 @@ const Tutorial = () => {
                 />
               </div>
               <p className="text-foreground leading-relaxed">
-                Kliknij kartę "Detektor Phishingu" aby otworzyć narzędzie do analizy e-maili.
+                Kliknij kartę "Detektor Phishingu" aby otworzyć narzędzie do
+                analizy e-maili.
               </p>
             </div>
-          )
+          ),
         },
         {
-          title: 'Krok 2: Dodaj adres e-maila',
-          description: 'Wpisz adres nadawcy podejrzanej wiadomości.',
+          title: "Krok 2: Dodaj adres e-maila",
+          description: "Wpisz adres nadawcy podejrzanej wiadomości.",
           content: (
             <div className="space-y-4">
-              <div className="relative w-full bg-muted rounded-lg overflow-hidden border border-border">
+              <div className="relative w-full bg-muted rounded-lg overflow-hidden border-2 border-border">
                 <Image
-                  src={imgUrlHelp('phishing-detector-step2')}
+                  src={imgUrlHelp("phishing-detector-step2")}
                   alt="Pole do wpisania adresu e-maila nadawcy"
                   width={800}
                   height={450}
@@ -369,19 +408,20 @@ const Tutorial = () => {
                 />
               </div>
               <p className="text-foreground leading-relaxed">
-                Skopiuj adres e-maila nadawcy z wiadomości i wklej go w pole tekstowe. Adres powinien wyglądać tak: osoba@domena.pl
+                Skopiuj adres e-maila nadawcy z wiadomości i wklej go w pole
+                tekstowe. Adres powinien wyglądać tak: osoba@domena.pl
               </p>
             </div>
-          )
+          ),
         },
         {
-          title: 'Krok 3: Wklej treść e-maila',
-          description: 'Dodaj pełną zawartość podejrzanej wiadomości.',
+          title: "Krok 3: Wklej treść e-maila",
+          description: "Dodaj pełną zawartość podejrzanej wiadomości.",
           content: (
             <div className="space-y-4">
-              <div className="relative w-full bg-muted rounded-lg overflow-hidden border border-border">
+              <div className="relative w-full bg-muted rounded-lg overflow-hidden border-2 border-border">
                 <Image
-                  src={imgUrlHelp('phishing-detector-step3')}
+                  src={imgUrlHelp("phishing-detector-step3")}
                   alt="Duże pole tekstowe do wklejenia treści e-maila"
                   width={800}
                   height={450}
@@ -393,20 +433,21 @@ const Tutorial = () => {
                   Zaznacz całą treść e-maila w programie poczty i wklej tutaj.
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  Aby skopiować: zaznacz tekst (Ctrl+A), skopiuj (Ctrl+C), wklej w pole (Ctrl+V)
+                  Aby skopiować: zaznacz tekst (Ctrl+A), skopiuj (Ctrl+C), wklej
+                  w pole (Ctrl+V)
                 </p>
               </div>
             </div>
-          )
+          ),
         },
         {
-          title: 'Krok 4: Sprawdź e-mail',
-          description: 'Uruchom analizę bezpieczeństwa wiadomości.',
+          title: "Krok 4: Sprawdź e-mail",
+          description: "Uruchom analizę bezpieczeństwa wiadomości.",
           content: (
             <div className="space-y-4">
-              <div className="relative w-full bg-muted rounded-lg overflow-hidden border border-border">
+              <div className="relative w-full bg-muted rounded-lg overflow-hidden border-2 border-border">
                 <Image
-                  src={imgUrlHelp('phishing-detector-step4')}
+                  src={imgUrlHelp("phishing-detector-step4")}
                   alt="Ekran z informacją o trwającej analizie e-maila"
                   width={800}
                   height={450}
@@ -414,19 +455,21 @@ const Tutorial = () => {
                 />
               </div>
               <p className="text-foreground leading-relaxed">
-                Kliknij przycisk "Sprawdź e-mail" i czekaj na wynik. Analiza zajmuje 5-15 sekund.
+                Kliknij przycisk "Sprawdź e-mail" i czekaj na wynik. Analiza
+                zajmuje 5-15 sekund.
               </p>
             </div>
-          )
+          ),
         },
         {
-          title: 'Krok 5: Przeczytaj wynik',
-          description: 'Wynik pokazuje czy e-mail jest bezpieczny czy podejrzany.',
+          title: "Krok 5: Przeczytaj wynik",
+          description:
+            "Wynik pokazuje czy e-mail jest bezpieczny czy podejrzany.",
           content: (
             <div className="space-y-4">
-              <div className="relative w-full bg-muted rounded-lg overflow-hidden border border-border">
+              <div className="relative w-full bg-muted rounded-lg overflow-hidden border-2 border-border">
                 <Image
-                  src={imgUrlHelp('image-detector-step1')}
+                  src={imgUrlHelp("image-detector-step1")}
                   alt="Wynik analizy e-maila ze wskaźnikiem zagrożenia"
                   width={800}
                   height={450}
@@ -439,36 +482,48 @@ const Tutorial = () => {
                 </p>
                 <div className="space-y-2">
                   <div className="flex gap-3 p-3 bg-red-50 border border-red-200 rounded-lg">
-                    <span className="text-red-700 font-semibold">Niebezpieczny</span>
-                    <span className="text-red-700">To jest oszustwo, usuń e-mail natychmiast</span>
+                    <span className="text-red-700 font-semibold">
+                      Niebezpieczny
+                    </span>
+                    <span className="text-red-700">
+                      To jest oszustwo, usuń e-mail natychmiast
+                    </span>
                   </div>
                   <div className="flex gap-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                    <span className="text-yellow-700 font-semibold">Podejrzany</span>
-                    <span className="text-yellow-700">E-mail wymaga ostrożności, nie klikaj linków</span>
+                    <span className="text-yellow-700 font-semibold">
+                      Podejrzany
+                    </span>
+                    <span className="text-yellow-700">
+                      E-mail wymaga ostrożności, nie klikaj linków
+                    </span>
                   </div>
                   <div className="flex gap-3 p-3 bg-green-50 border border-green-200 rounded-lg">
-                    <span className="text-green-700 font-semibold">Bezpieczny</span>
-                    <span className="text-green-700">E-mail wydaje się autentyczny</span>
+                    <span className="text-green-700 font-semibold">
+                      Bezpieczny
+                    </span>
+                    <span className="text-green-700">
+                      E-mail wydaje się autentyczny
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
-          )
-        }
-      ]
-    }
-  ]
+          ),
+        },
+      ],
+    },
+  ];
 
   const tableOfContents = [
-    { id: 'image-detector', label: 'Wykrywacz AI Zdjęć' },
-    { id: 'article-checker', label: 'Weryfikator Wiadomości' },
-    { id: 'phishing-detector', label: 'Detektor Phishingu' }
-  ]
+    { id: "image-detector", label: "Wykrywacz AI Zdjęć" },
+    { id: "article-checker", label: "Weryfikator Wiadomości" },
+    { id: "phishing-detector", label: "Detektor Phishingu" },
+  ];
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
+
       <main className="container mx-auto px-4 py-12" role="main">
         {/* Nagłówek */}
         <div className="max-w-3xl mx-auto mb-12">
@@ -476,7 +531,8 @@ const Tutorial = () => {
             Poradnik użytkownika
           </h1>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            Krok po kroku wyjaśniamy jak korzystać z każdego narzędzia VeroAI. Każdy krok zawiera zrzuty ekranu i szczegółowe instrukcje.
+            Krok po kroku wyjaśniamy jak korzystać z każdego narzędzia VeroAI.
+            Każdy krok zawiera zrzuty ekranu i szczegółowe instrukcje.
           </p>
         </div>
 
@@ -503,9 +559,9 @@ const Tutorial = () => {
         {/* Sekcje */}
         <div className="max-w-3xl mx-auto space-y-16">
           {sections.map((section) => (
-            <section 
-              key={section.id} 
-              id={section.id} 
+            <section
+              key={section.id}
+              id={section.id}
               className="scroll-mt-8"
               data-section={section.id}
             >
@@ -527,13 +583,14 @@ const Tutorial = () => {
               {/* Kroki */}
               <div className="space-y-8">
                 {section.steps.map((step, stepIndex) => {
-                  const stepHeight = stepHeights[section.id]?.[stepIndex] || 0
-                  const isActive = activeSectionSteps[section.id] === stepIndex
-                  const isNextActive = activeSectionSteps[section.id] === stepIndex + 1
+                  const stepHeight = stepHeights[section.id]?.[stepIndex] || 0;
+                  const isActive = activeSectionSteps[section.id] === stepIndex;
+                  const isNextActive =
+                    activeSectionSteps[section.id] === stepIndex + 1;
 
                   return (
-                    <div 
-                      key={stepIndex} 
+                    <div
+                      key={stepIndex}
                       className="relative"
                       data-step={`${section.id}-${stepIndex}`}
                     >
@@ -543,26 +600,27 @@ const Tutorial = () => {
                         <div className="flex flex-col items-center sticky top-[75px] h-12 z-10">
                           {/* Linia czasu pionowa - dynamiczna wysokość */}
                           {stepIndex < section.steps.length - 1 && (
-                            <div 
+                            <div
                               className="absolute left-1/2 transform -translate-x-1/2 w-0.5 pointer-events-none transition-opacity duration-300"
                               style={{
-                                top: '100%',
+                                top: "100%",
                                 height: `${stepHeight}px`,
-                                background: isActive || isNextActive 
-                                  ? 'linear-gradient(to bottom, rgba(59, 130, 246, 0.3), rgb(59, 130, 246))'
-                                  : 'linear-gradient(to bottom, rgba(156, 163, 175, 0.2), rgba(156, 163, 175, 0.5))',
-                                opacity: isActive || isNextActive ? 1 : 0.5
+                                background:
+                                  isActive || isNextActive
+                                    ? "linear-gradient(to bottom, rgba(59, 130, 246, 0.3), rgb(59, 130, 246))"
+                                    : "linear-gradient(to bottom, rgba(156, 163, 175, 0.2), rgba(156, 163, 175, 0.5))",
+                                opacity: isActive || isNextActive ? 1 : 0.5,
                               }}
                             />
                           )}
-                          
+
                           {/* Sam numer */}
-                          <div 
+                          <div
                             className={cn(
                               "flex items-center justify-center w-12 h-12 rounded-full font-bold text-lg shrink-0 transition-all duration-300 relative z-20 bg-background",
                               isActive
-                                ? 'bg-primary text-white scale-110 shadow-lg' 
-                                : 'bg-muted text-muted-foreground'
+                                ? "bg-primary text-white scale-110 shadow-lg"
+                                : "bg-muted text-muted-foreground"
                             )}
                           >
                             {stepIndex + 1}
@@ -571,12 +629,12 @@ const Tutorial = () => {
 
                         {/* Zawartość kroku */}
                         <div className="flex-1 pt-1">
-                          <Card 
+                          <Card
                             className={cn(
                               "border-border transition-all duration-300",
                               isActive
-                                ? 'border-primary shadow-md' 
-                                : 'border-border'
+                                ? "border-primary shadow-md"
+                                : "border-border"
                             )}
                           >
                             <CardHeader>
@@ -587,14 +645,12 @@ const Tutorial = () => {
                                 {step.description}
                               </CardDescription>
                             </CardHeader>
-                            <CardContent>
-                              {step.content}
-                            </CardContent>
+                            <CardContent>{step.content}</CardContent>
                           </Card>
                         </div>
                       </div>
                     </div>
-                  )
+                  );
                 })}
               </div>
             </section>
@@ -621,7 +677,7 @@ const Tutorial = () => {
 
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default Tutorial
+export default Tutorial;
