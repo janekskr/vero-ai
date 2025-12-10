@@ -52,7 +52,7 @@ const DashboardSidebar = () => {
   return (
     <>
       <button
-        className="md:hidden fixed top-4 left-4 z-[60] bg-card border border-border p-2 rounded-lg shadow-sm"
+        className="md:hidden fixed top-4 left-4 z-60 bg-card border border-border p-2 rounded-lg shadow-sm"
         onClick={() => setOpen(!open)}
       >
         {open ? <X size={24} /> : <Menu size={24} />}
@@ -60,14 +60,14 @@ const DashboardSidebar = () => {
 
       {open && (
         <div
-          className="fixed inset-0 bg-black/40 z-[40] md:hidden"
+          className="fixed inset-0 bg-black/40 z-40 md:hidden"
           onClick={() => setOpen(false)}
         />
       )}
 
       <aside
         className={cn(
-          "w-72 bg-card border-r border-border min-h-screen flex flex-col fixed md:static z-[50] transition-transform duration-300",
+          "w-72 bg-card border-r border-border min-h-screen flex flex-col fixed md:static z-50 transition-transform duration-300",
           open ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         )}
       >
