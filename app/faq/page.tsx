@@ -75,7 +75,7 @@ const FAQ = () => {
 
         <div className="text-center mt-12">
           <a
-            href="/dashboard"
+            href="/"
             className="underline text-primary text-xl font-medium hover:text-primary/80 transition"
           >
             Wróć do strony głównej
